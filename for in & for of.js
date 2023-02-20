@@ -54,3 +54,49 @@ for (let i in enumerTest) {
 //    1.2.2 value,设置属性的值,默认undefined
 //    1.2.3 writable:true,该属性的值才能被重写,默认值为false
 // 1.3 Object.defineProperty(obj,prop,description),若prop在obj上不存在，则会创建一个新的属性
+
+//2. for of 首要条件是需要部署Iterator接口
+let arrIter = [1, 2, 3];
+
+let objIter = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+
+for (let i of arrIter) {
+  console.log(i, "-->i of arrIter"); //-->被遍历结构的每一项
+}
+//for (let i of objIter) {
+//报错
+//}
+
+//2.1 Iterator接口是为了给各个数据结构提供统一的遍历方法
+//2.1.1 具有Iterator接口的数据结构：Array、Map、Set、Arguments、NodeList、TypedArray、String
+//Array
+//Map
+const mapIter = new Map([
+  ["1", "a"],
+  ["2", "b"],
+  ["3", "d"],
+]);
+for (let i of mapIter) {
+  console.log(i);
+}
+//Set
+const setIter = new Set(["a", "b", "c"]);
+for (let i of setIter) {
+  console.log(i);
+}
+//arguments
+(function () {
+  for (let i of arguments) {
+    console.log(i);
+  }
+})("a", "b", "v");
+//String
+for (let i of "HelloWorld") {
+  console.log(i);
+}
+//TypedArray
+//NodeList
