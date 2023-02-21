@@ -1,6 +1,6 @@
 // 1. for in 遍历对象中的可枚举属性，并且会顺着原型链向上查找
 function A() {
-  this.a = 1;
+    this.a = 1;
 }
 
 A.prototype.b = 2;
@@ -12,8 +12,8 @@ console.log(a); //-->实例a中会有属性 a:1
 console.log(a.__proto__); //实例a的构造函数的原型对象上有属性b:2
 
 for (let i in a) {
-  console.log(i, "-->key", a);
-  //会遍历出原型链上的属性
+    console.log(i, "-->key", a);
+    //会遍历出原型链上的属性
 }
 
 // 1.1 可枚举属性 enumerable：true，该属性才会出现在对象的枚举属性中，默认值为false
@@ -25,7 +25,7 @@ console.log(Object.getOwnPropertyDescriptor(enumerTest, "a"), "--->查看属性�
 //添加的属性是可被枚举的enumerable:true
 
 for (let i in enumerTest) {
-  console.log(i, "--->key in enumerTest"); //for in可以遍历到
+    console.log(i, "--->key in enumerTest"); //for in可以遍历到
 }
 
 Object.defineProperty(enumerTest, "a", { enumerable: false });
@@ -34,19 +34,19 @@ console.log(Object.getOwnPropertyDescriptors(enumerTest), "--->查看所有属�
 //属性b的描述符configurable因为没有显示定义所有使用默认值false
 
 for (let i in enumerTest) {
-  console.log(i, "--->key in enumerTest after fix"); //-->只能遍历到属性b
+    console.log(i, "--->key in enumerTest after fix"); //-->只能遍历到属性b
 }
 
 enumerTest.__proto__.c = "1";
 
 for (let i in enumerTest) {
-  console.log(i, "--->key in enumerTest after add ");
+    console.log(i, "--->key in enumerTest after add ");
 }
 
 Object.defineProperty(enumerTest.__proto__, "c", { enumerable: false, value: "!!!" });
 
 for (let i in enumerTest) {
-  console.log(i, "--->key in enumerTest after add and fix"); //属性c不可被枚举
+    console.log(i, "--->key in enumerTest after add and fix"); //属性c不可被枚举
 }
 // 1.1.1 默认值是使用Object.defineProperty 定义属性时的默认值
 // 1.2 其余属性
@@ -55,17 +55,17 @@ for (let i in enumerTest) {
 //    1.2.3 writable:true,该属性的值才能被重写,默认值为false
 // 1.3 Object.defineProperty(obj,prop,description),若prop在obj上不存在，则会创建一个新的属性
 
-//2. for of 首要条件是需要部署Iterator接口
+//2. for of 作用与可迭代对象，一个可迭代对象必须要实现Iterator接口
 let arrIter = [1, 2, 3];
 
 let objIter = {
-  a: 1,
-  b: 2,
-  c: 3,
+    a: 1,
+    b: 2,
+    c: 3,
 };
 
 for (let i of arrIter) {
-  console.log(i, "-->i of arrIter"); //-->被遍历结构的每一项
+    console.log(i, "-->i of arrIter"); //-->被遍历结构的每一项
 }
 //for (let i of objIter) {
 //报错
@@ -76,27 +76,27 @@ for (let i of arrIter) {
 //Array
 //Map
 const mapIter = new Map([
-  ["1", "a"],
-  ["2", "b"],
-  ["3", "d"],
+    ["1", "a"],
+    ["2", "b"],
+    ["3", "d"],
 ]);
 for (let i of mapIter) {
-  console.log(i);
+    console.log(i);
 }
 //Set
 const setIter = new Set(["a", "b", "c"]);
 for (let i of setIter) {
-  console.log(i);
+    console.log(i);
 }
 //arguments
 (function () {
-  for (let i of arguments) {
-    console.log(i);
-  }
+    for (let i of arguments) {
+        console.log(i);
+    }
 })("a", "b", "v");
 //String
 for (let i of "HelloWorld") {
-  console.log(i);
+    console.log(i);
 }
 //TypedArray
 //NodeList
