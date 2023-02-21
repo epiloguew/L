@@ -71,7 +71,7 @@ for (let i of arrIter) {
 //报错
 //}
 
-//2.1 Iterator接口是为了给各个数据结构提供统一的遍历方法
+//2.1 Iterator接口是为了给各个数据结构提供统一的访问机制
 //2.1.1 具有Iterator接口的数据结构：Array、Map、Set、Arguments、NodeList、TypedArray、String
 //Array
 //Map
@@ -100,3 +100,31 @@ for (let i of "HelloWorld") {
 }
 //TypedArray
 //NodeList
+
+//2.2Iterator接口 遍历时，会创建一个指针对象，调用指针对象的next()方法依次指向数据结构中的成员
+//  2.2.1 调用next() 方法返回 {value：当前成员值,done:遍历是否结束}
+
+const GenerIter = (arr) => {
+    //-->模拟实现next()
+    let index = 0;
+    return {
+        next() {
+            return {
+                value: arr[index++], //-->借用闭包每次调用时保持变量引用不被销毁
+                done: index > arr.length,
+            };
+        },
+    };
+};
+
+let iterOptions = ["a", "b", { c: 1 }];
+let s = GenerIter(iterOptions);
+for (let i = 0; i <= iterOptions.length; i++) {
+    console.log(s.next()); //---> {value:当前项,done:遍历是否结束},done:true时value为undefined
+}
+
+//2.3 手动调用 Array.prototype.Symbol(Symbol.iterator)
+let noAutoIter = iterOptions[Symbol.iterator](); //--> Symbol.iterator是一个函数
+for (let i = 0; i <= iterOptions.length; i++) {
+    console.log(noAutoIter.next()); //--->{value:Any|undefined,done:Boolean}
+}
