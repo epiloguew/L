@@ -128,3 +128,11 @@ let noAutoIter = iterOptions[Symbol.iterator](); //--> Symbol.iterator是一个�
 for (let i = 0; i <= iterOptions.length; i++) {
     console.log(noAutoIter.next()); //--->{value:Any|undefined,done:Boolean}
 }
+
+//2.4 Object没有默认Iterator接口，因为Object的哪个属性先遍历，哪个后遍历是不确定的，本质上，遍历器是一种线性
+//处理，对于任何非线性的数据结构，部署遍历器接口，就等于部署一种线性转换赋
+
+//2.5 Iterator使用场合
+//  对数组和Set结构进行解构赋值时，会默认调用Symbol.iterator
+//  扩展运算符 //TODO 对象的扩展运算符
+//  yield、Array.from()
