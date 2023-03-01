@@ -1,7 +1,8 @@
 //关于this的指向问题
-// 1. 每个函数本身都有自己的this指向 ：函数的独立调用中this指向window（全局对象） 严格模式下指向undefined
+// 1. 每个函数本身都有自己的this指向 ：函数的独立调用中this指向window（全局对象）
+//  1.1 严格模式下 函数内的this 指向undefined，函数的独立调用this也指向undefined，但有调用者this将会返回
 // 2. 默认绑定规则 this === window / global
-
+//  2.1 非函数作用域中由var定义的变量，等同于window的变量，但global不会
 (function () {
     console.log(this);
     // console.log(global );
@@ -49,4 +50,15 @@ let objFather = {
     a.call(true, 1, 2);
     a.call("1", 1, 2);
     a.call(undefined, 1, 2);
+    var ddd = "glgl";
+    // console.log(global.ddd);
 })();
+
+function d() {
+    "use strict";
+    return this;
+}
+let dd = {
+    s: 1,
+};
+console.log(d.call(globalThis));
