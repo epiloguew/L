@@ -16,10 +16,10 @@
     //console.log(newObj, "-->new "); //->{a:"1234",b:2,c:3,d:5} Object.assign返回修改后的对象
     let os = {};
     Object.defineProperties(os, {
-        "a": {
+        a: {
             enumerable: false,
         },
-        "b": {
+        b: {
             enumerable: true,
             get() {
                 console.log("assign --->");
@@ -99,4 +99,42 @@
     //快速转换map
     const map = new Map(Object.entries(a));
     console.log(map);
+})();
+
+//Object.freeze 冻结一个对象
+//  不能向此对象添加新的属性
+//  不能删除已有属性
+//  不能修改该对象已有属性的可枚举性、可配置性、可写性，以及不能修改已有属性的值
+//  TODO冻结一个对象后，该对象的原型也不能被修改
+//  freeze()返回和传入的参数相同的对象，而不是一个冻结的拷贝
+//数据也可被冻结
+(function () {
+    let obj = {
+        a: 10,
+        b: "1111",
+    };
+    Object.freeze(obj); //-->冻结obj
+    obj.a = 20;
+    console.log(obj, "---> a not change");
+    // Object.defineProperty(obj, "b", {
+    //     enumerable: false,
+    // }); ---> 描述符属性不可修改
+
+    let arr = [1, 2, 34];
+    Object.freeze(arr);
+    arr[0] = 10;
+    console.log(arr, "---> arr[0] not change");
+
+    //若属性为引用类型，触发显示冻结，否则依旧可以修改
+    let objZ = {
+        obj: {
+            a: 1,
+        },
+    };
+    Object.freeze(objZ);
+    objZ["obj"]["a"] = 1000;
+    console.log(objZ, "-->objz.obj.a change");
+    Object.freeze(objZ.obj);
+    objZ["obj"]["a"] = 2221000;
+    console.log(objZ, "-->objz.obj.a not change");
 })();
