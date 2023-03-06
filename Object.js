@@ -138,3 +138,85 @@
     objZ["obj"]["a"] = 2221000;
     console.log(objZ, "-->objz.obj.a not change");
 })();
+
+//Object.fromEntries 接收一个键值对的列表参数，并返回带有键值对的新对象
+//  Object.fromEntries 与 Object.entries 互逆
+(function () {
+    let arr = [
+        [1, 0],
+        [2, 1],
+        [320, 8],
+        ["asdfasdfasfs", 0],
+    ];
+    let map = new Map(arr);
+    console.log(Object.fromEntries(map), "map -> object");
+    console.log(Object.fromEntries(arr), "arr -> object");
+
+    //对 Object 进行数据加工
+    let obj = {
+        a: 10,
+        b: 22,
+        c: 33,
+        d: 3,
+        e: 130,
+    };
+    let news = Object.fromEntries(Object.entries(obj).map((item) => [item[0], item[1] * 10 + "ADFG"]));
+    console.log(news, "after map -> news");
+})();
+
+// Object.getOwnPropertyDescriptor 返回指定对象上自有属性对应的属性描述符
+//  自有属性是指直接赋予该对象的属性，不需要从原型链上进行查找
+//  若属性不存在则返回undefined
+(function () {
+    function A() {
+        this.a = "!!!!";
+    }
+    A.prototype.b = "@@@@@";
+    let a = new A();
+    Object.defineProperty(a, "c", { value: "$$$$" });
+    // console.log(Object.getOwnPropertyDescriptor(a, "a"), "a.a ->description");
+    // console.log(Object.getOwnPropertyDescriptor(a, "b"), "a.b ->description");
+    // console.log(Object.getOwnPropertyDescriptor(a, "c"), "a.c ->description");
+})();
+
+// Object.getOwnPropertyNames 返回一个由指定对象的所有自身属性的属性名组成的数组
+//TODO  包括不可枚举属性
+//  不包括Symbol值作为名称的属性
+(function () {
+    //arr 会有length属性
+    let arr = [1, 2, 3];
+    console.log(Object.getOwnPropertyNames(arr), "arr -> getOwnPropertyNames");
+    //obj
+    let obj = Object.create(null, {
+        a: {
+            value: "qqq",
+            enumerable: true,
+        },
+        b: {
+            value: "nono",
+            enumerable: false,
+        },
+    });
+    console.log(Object.getOwnPropertyNames(obj), "obj -> getOwnPropertyNames");
+    //enumerable false 也被查出来
+})();
+
+////TODO Object.getOwnPropertySymbols
+
+// Object.getPropertyOf 返回对象的原型(实例构造函数的原型对象)
+(function () {
+    function A() {
+        this.a = "!!!!";
+    }
+    A.prototype.b = "@@@@@";
+    let a = new A();
+    console.log(Object.getPrototypeOf(a), "getPrototype a");
+    console.log(Object.getPrototypeOf(a) === a.__proto__, "===a.__proto__");
+    console.log(Object.getPrototypeOf(a) === A.prototype, "===A.prototype");
+})();
+
+// Object.is 判断两个值是否为同一个值
+//  NaN与NaN是一个值，但在Set中NaN!==NaN
+//  满足以下任意条件两个值相等：1.都是undefined；2.都是null；3.都是true或false；4.都是长度相等、字符相同、按相同顺序排列的字符串；5.都是相同对象(都是同一个对象的值引用)；6.都是数字且都是+0或-0或NaN或都是一个值非零且都不是NaN
+//  Object.is 与 == 不同，不会强制转换两边的值
+//  Object.is 与=== 不同，差别在对待有符号的0和NaN，
