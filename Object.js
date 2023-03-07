@@ -220,3 +220,92 @@
 //  满足以下任意条件两个值相等：1.都是undefined；2.都是null；3.都是true或false；4.都是长度相等、字符相同、按相同顺序排列的字符串；5.都是相同对象(都是同一个对象的值引用)；6.都是数字且都是+0或-0或NaN或都是一个值非零且都不是NaN
 //  Object.is 与 == 不同，不会强制转换两边的值
 //  Object.is 与=== 不同，差别在对待有符号的0和NaN，
+
+// Object.isExtensible 判断一个对象是否可拓展的(是否可以添加新的属性)
+//  默认情况下，对象是可拓展的，可以为它添加新的属性，已经__proto__上的属性可以被更改
+//  Object.preventExtensions、Object.seal、Object.freeze 可以标记一个对象为不可拓展
+//  密封对象是不可扩展的 seal
+//  冻结对象是不可扩展的 freeze
+(function () {
+    //新对象默认是可拓展的
+    let obj = Object.create(null, {
+        a: {
+            enumerable: true,
+            value: 1,
+        },
+    });
+    console.log(Object.isExtensible(obj), "new obj ->");
+    //修改为不可扩展
+    Object.preventExtensions(obj);
+    console.log(Object.isExtensible(obj), "change obj ->");
+    obj.b = 1;
+    console.log(obj, "add b obj ->");
+})();
+
+// Object.isFrozen 判断一个对象是否被冻结
+//  一个对象是冻结的指它不可扩展，所有属性都是不可配置的，且所有数据属性(数据描述符)都是不可写的(不可修改？)
+//  一个不可扩展的对象空对象也是一个冻结对象
+//  一个非空对象默认也是非冻结的
+(function () {
+    //一个对象默认是可扩展的，也是非冻结的
+    let obj = Object.create(null, {
+        a: {
+            enumerable: true,
+            value: 1,
+        },
+    });
+    console.log(Object.isFrozen(obj), "ifFrozen");
+
+    //一个不可扩展的对象空对象也是一个冻结对象
+    console.log(Object.isFrozen(Object.preventExtensions({})), "isExtensible empty obj");
+
+    //一个非空对象默认也是非冻结的
+    console.log(Object.isFrozen({ a: 1 }), "not empty obj");
+
+    //TODO  nmgbd这么多判断条件
+})();
+
+// Object.isSealed 判断一个对象是否被密封
+//  密封是指那些不可扩展的，且所有自身属性都不可配置且因此不可删除(但不一定是不可写)的对象
+(function () {
+    //一个新对象默认不是密封的
+    let obj = {};
+    console.log(Object.isSealed(obj), "isSealed ->");
+    //将一个空对象变得不可扩展，同时也成为一个密封对象
+    console.log(Object.isSealed(Object.preventExtensions(obj)), "to isEx");
+    //若转变为不可扩展对象的不是一个空对象，则不会变为密封对象，因为密封对象得所有自身属性必须是不可配置的
+    //如果将对象中的属性变为不可配置的，则该对象变为密封对象
+})();
+
+// Object.keys 返回一个由给定对象的自身可枚举属性组成的数组
+//  keys -> 自身可枚举
+//  getOwnPropertyNames -> 自身可枚举和不可枚举属性
+//  for in -> 自身以及原型链上可枚举属性
+
+////TODO Object.preventExtensions
+
+////TODO Object.seal
+
+// Object.setPrototyoeOf 设置一个指定的对象到另一个对象的__proto__或null
+(function () {
+    class A {
+        constructor() {
+            this.a = 10;
+        }
+        a() {
+            return 1;
+        }
+    }
+    let a = new A();
+    let s = {};
+    Object.setPrototypeOf(s, a);
+    console.log(s.__proto__.a);
+})();
+
+// Object.values 返回一个给定对象自身的所有可枚举属性值的数组
+
+//实例属性
+
+// Object.prototype.constructor 指向Object构造函数
+
+// Object.prototype.__proto__ 但Object实例化时，使用该对象作为实例化对象的__proto__
