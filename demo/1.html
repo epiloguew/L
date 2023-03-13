@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        .scs {
+            background: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <v-component :pro="pro"> </v-component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.directive('loading', {
+            bind(el, binding) {
+                console.log(binding);
+                let { value } = binding;
+                if (value === '') {
+                    const div = document.createElement('div')
+                    div.innerText = '加载中...'
+                    div.setAttribute('id', 'loading')
+                    div.style.position = 'absolute'
+                    div.style.left = 0
+                    div.style.top = 0
+                    div.style.width = '100%'
+                    div.style.height = '100%'
+                    div.style.display = 'flex'
+                    div.style.justifyContent = 'center'
+                    div.style.alignItems = 'center'
+                    div.style.color = 'white'
+                    div.style.background = 'rgba(0, 0, 0, .7)'
+                    document.body.append(div)
+                }
+            },
+            update(el, binding) {
+                let { value } = binding;
+                let dos = document.querySelector('#loading');
+                if (value === "this is father" && dos) {
+                    document.body.removeChild(dos)
+                }
+            }
+        })
+        Vue.component("v-component", {
+            template: "<div v-loading='pro' class='scs'>{{pro}}</div>",
+            props: {
+                pro: {
+                    type: String,
+                    default: "this is component",
+                },
+            },
+            mounted() {
+                setTimeout(() => {
+                    console.log(this)
+                    this.$parent.pro = 'this is father';
+                }, 1000)
+            }
+        });
+        new Vue({
+            el: "#root",
+            data: {
+                pro: ''
+            }
+        });
+    </script>
+</body>
+
+</html>
