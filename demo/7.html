@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <input v-model="a" />
+        <input v-model="b" />
+        <input v-model="c.c1" />
+        <input v-model="c.c1" />
+        <input v-model="d" />
+        <input v-model="e" />
+        {{'result:'+result}}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            data: {
+                a: '',
+                b: '',
+                c: {
+                    c1: '333'
+                },
+                d: '',
+                e: 10,
+                result: 10
+            },
+            methods: {
+                getWatch(...rest) {
+                    console.log(rest, 'b')
+                },
+                add() {
+                    this.result += 10
+                }
+            },
+            watch: {
+                // one 监听属性作为key，callback作为value
+                a(...rest) {
+                    console.log(rest, 'a')
+                },
+                //  two 直接调用mothods
+                b: 'getWatch',
+                // three value 对象形式
+                // c(...rest) {
+                //     console.log(rest, 'c')
+                // }
+                c: {
+                    handler(...rest) {
+                        console.log(rest, 'c')
+                    },
+                    deep: true
+                },
+                // four string key
+                'c.c1'(...rest) {
+                    console.log(rest, 'c1')
+                },
+                //five 
+                d: {
+                    handler(...rest) {
+                        console.log(rest, 'd')
+                    }, immediate: true
+                },
+                //six 回调数组
+                e: [
+                    {
+                        handler(...rest) {
+                            this.result++
+                        },
+                        immediate: true
+                    },
+                    'add',
+                    function () {
+                        this.result -= 5
+                    }
+                ]
+            }
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>

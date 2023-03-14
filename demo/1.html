@@ -48,6 +48,7 @@
                 }
             }
         })
+
         Vue.component("v-component", {
             template: "<div v-loading='pro' class='scs'>{{pro}}</div>",
             props: {
@@ -63,12 +64,32 @@
                 }, 1000)
             }
         });
-        new Vue({
+        let d = new Vue({
             el: "#root",
             data: {
-                pro: ''
+                pro: '',
+                dds: 1
+            },
+            methods: {
+                dd22() { }
             }
         });
+        console.log(d, 'd')
+        let s = Vue.extend({
+            data() {
+                return {
+                    d: 1
+                }
+            }
+        });
+        let c = new s({
+            data() {
+                return {
+                    s: 2
+                }
+            }
+        })
+        console.log(c, 's') // Vue.extend VueComponent构造函数继承了 Vue构造器 （options合并了）
     </script>
 </body>
 

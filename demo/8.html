@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <div id="root">
+        <Test>
+            <h1>sfaf</h1>
+            <template v-slot:header="{out,other}">
+                <h1>{{out.a}}-{{out.bv}}-{{other}}</h1>
+            </template>
+        </Test>
+    </div> -->
+    <div id="root2">
+        <Test>
+            <template #[cha]="{cc}">
+                <h1>{{cc}}</h1>
+            </template>
+            <!-- <template v-slot:foot>
+
+            </template> -->
+        </Test>
+        <button @click="cha='foot'">222</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('Test', {
+            template:
+                `<div>
+                    <slot name='header' :out='dd' other='1dd' :cc='1'></slot>
+                    <slot name='foot' :cc='2'></slot>
+                </div>
+                `,
+            data() {
+                return {
+                    dd: {
+                        a: 1,
+                        bv: 2
+                    }
+                }
+            }
+
+        })
+        // new Vue({
+
+        // }).$mount('#root')
+        new Vue({
+            data() {
+                return {
+                    cha: 'header'
+                }
+            }
+        }).$mount('#root2')
+    </script>
+</body>
+
+</html>
